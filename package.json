@@ -5,16 +5,22 @@
   "main": "./src/pure.js",
   "dependencies": {},
   "devDependencies": {
-    "jest": "^22.2.2",
-    "babel-core": "^6.26.0",
-    "babel-jest": "^22.2.2",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^22.4.4",
+    "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.75.0",
+    "flow-typed": "^2.4.0",
+    "jest": "^22.2.2",
     "regenerator-runtime": "^0.11.1"
   },
   "scripts": {
     "test": "jest ./test",
     "test-watch": "jest ./test --watch",
-    "test-help": "jest --help"
+    "test-help": "jest --help",
+    "typecheck": "flow check"
   },
   "repository": {
     "type": "git",

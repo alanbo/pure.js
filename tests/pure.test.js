@@ -1,4 +1,4 @@
-import p, { Pure } from '../src/pure';
+import p, { Pure } from '../src/p';
 
 beforeEach(() => {
   document.body.innerHTML = `
