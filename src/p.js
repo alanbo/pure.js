@@ -1,36 +1,90 @@
 // @flow
 import Pure from './Pure';
 
-export { Pure };
+interface PureAdded {
+  $: Pure
+}
 
-function pure(selector, is_one = false) {
-  const selected =  is_one ? document.querySelector(selector) : document.querySelectorAll(selector);
+type HtmlElemListPure = HTMLElement & PureAdded | NodeList<HTMLElement> & PureAdded | null;
+type HtmlElemPure = HTMLElement & PureAdded;
+type HtmlCollectionPure = HTMLCollection<HTMLElement> & PureAdded | null;
 
-  selected.$ = new Pure(selected);
+
+function pure(selector: string): PureAdded  {
+  let selected: any = document.querySelectorAll(selector);
+
+  if (selected) {
+    selected.$ = new Pure(selected);
+    (selected: HtmlElemListPure);
+  } else {
+    selected = {
+      $: new Pure(null)
+    }
+  }
 
   return selected;
 }
 
-pure.c = cl => {
-  const selected =  document.getElementsByClassName(cl);
 
-  selected.$ = new Pure(selected);
+pure.one = (selector: string): HtmlElemPure | PureAdded => {
+  let selected: any =  document.querySelector(selector);
+
+  if (selected) {
+    selected.$ = new Pure(selected);
+    (selected: HtmlElemPure);
+  } else {
+    selected = {
+      $: new Pure(null)
+    }
+  }
+
+  return selected;
+}
+
+
+pure.c = (cl: string): HtmlCollectionPure | PureAdded => {
+  let selected: any =  document.getElementsByClassName(cl);
+
+  if (selected) {
+    selected.$ = new Pure(selected);
+    (selected: HtmlCollectionPure);
+  } else {
+    selected = {
+      $: new Pure(null)
+    }
+  }
 
   return selected;
 };
 
-pure.t = tag => {
-  const selected =  document.getElementsByTagName(tag);
 
-  selected.$ = new Pure(selected);
+pure.t = (tag: string): HtmlCollectionPure | PureAdded => {
+  let selected: any =  document.getElementsByTagName(tag);
+
+  if (selected) {
+    selected.$ = new Pure(selected);
+    (selected: HtmlCollectionPure);
+  } else {
+    selected = {
+      $: new Pure(null)
+    }
+  }
 
   return selected;
 };
 
-pure.i = id => {
-  const selected =  document.getElementById(id);
 
-  selected.$ = new Pure(selected);
+pure.i = (id: string): HtmlElemPure | PureAdded => {
+  let selected: any =  document.getElementById(id);
+
+  if (selected) {
+    selected.$ = new Pure(selected);
+    (selected: HtmlElemPure);
+  } else {
+    selected = {
+      $: new Pure(null)
+    }
+  }
 
   return selected;
 };

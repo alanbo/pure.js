@@ -20,6 +20,7 @@
     "test": "jest ./test",
     "test-watch": "jest ./test --watch",
     "test-help": "jest --help",
+    "flow": "flow",
     "typecheck": "flow check"
   },
   "repository": {
