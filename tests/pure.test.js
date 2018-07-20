@@ -1,4 +1,5 @@
-import p, { Pure } from '../src/pure';
+import p from '../src/p';
+import Pure from '../src/Pure';
 
 beforeEach(() => {
   document.body.innerHTML = `
@@ -13,10 +14,11 @@ beforeEach(() => {
 
 
 test('checks for existance of pure.js', () => {
-  const $body = p('body');
+  const body = p('body');
+  console.log(body);
   expect(p).toBeDefined();
-  expect($body.$).toBeDefined();
-  expect($body.$).toBeInstanceOf(Pure);
+  expect(body.$).toBeDefined();
+  expect(body.$).toBeInstanceOf(Pure);
   expect(typeof p).toBe('function');
 });
 
@@ -31,8 +33,8 @@ test('checks if quering works', () => {
 
 
 test('checks if quering one element works', () => {
-  const body = p('body', true);
-  const last_div = p('div:last-child', true);
+  const body = p.one('body');
+  const last_div = p.one('div:last-child');
 
   expect(body).toBeInstanceOf(HTMLBodyElement);
   expect(body.tagName).toBe('BODY');
@@ -62,4 +64,18 @@ test('checks if selection by tag name works', () => {
 test('checks if selection by id works', () => {
   const div = p.i('sample_id');
   expect(div).toBeInstanceOf(Element);
+});
+
+test('checks if null results return Pure interface', () => {
+  const null_p = p('.non-existant-class');
+  const null_one = p.one('.non-existant-class');
+  const null_c = p.c('non-existant-class');
+  const null_t = p.t('blockquote');
+  const null_i = p.i('non-existant-id');
+
+  expect(null_p.$).toBeInstanceOf(Pure);
+  expect(null_one.$).toBeInstanceOf(Pure);
+  expect(null_c.$).toBeInstanceOf(Pure);
+  expect(null_t.$).toBeInstanceOf(Pure);
+  expect(null_i.$).toBeInstanceOf(Pure);
 });
