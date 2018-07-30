@@ -6,8 +6,13 @@ beforeEach(() => {
     <div class="sample">
       <p>sample text</p>
     </div>
-    <div id="sample_id">
+    <div>
     </div>
+    <div class="iterate"></div>
+    <div class="iterate"></div>
+    <div class="iterate"></div>
+    <div class="iterate"></div>
+    <div id="sample_id" class="iterate"></div>
   `;
 
 });
@@ -78,4 +83,40 @@ test('checks if null results return Pure interface', () => {
   expect(null_c.$).toBeInstanceOf(Pure);
   expect(null_t.$).toBeInstanceOf(Pure);
   expect(null_i.$).toBeInstanceOf(Pure);
+});
+
+describe('Each method', () => {
+  test('Iterates over html collection', () => {
+    let iterations = 0;
+    const elems = p.c('iterate');
+    elems.$.each(elem => {
+      expect(elem).toBeInstanceOf(HTMLElement);
+      iterations++;
+    });
+    
+    expect(iterations).toEqual(elems.length);
+  });
+
+  test('Iterates over NodeList', () => {
+    let iterations = 0;
+    const elems = p.t('div');
+
+    elems.$.each(elem => {
+      expect(elem).toBeInstanceOf(HTMLElement);
+      iterations++;
+    });
+
+    expect(iterations).toEqual(elems.length);
+  });
+
+  test('Runs callback over one HTMLElement', () => {
+    let iterations = 0;
+
+    p.one('div').$.each(elem => {
+      expect(elem).toBeInstanceOf(HTMLElement);
+      iterations++;
+    });
+
+    expect(iterations).toEqual(1);
+  });
 });

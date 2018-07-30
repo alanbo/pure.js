@@ -1,13 +1,11 @@
 // @flow
 import Pure from './Pure';
-
-interface PureAdded {
-  $: Pure
-}
-
-type HtmlElemListPure = HTMLElement & PureAdded | NodeList<HTMLElement> & PureAdded | null;
-type HtmlElemPure = HTMLElement & PureAdded;
-type HtmlCollectionPure = HTMLCollection<HTMLElement> & PureAdded | null;
+import type {
+  PureAdded,
+  HtmlElemListPure,
+  HtmlElemPure,
+  HtmlCollectionPure
+} from './types/html-types';
 
 
 function pure(selector: string): PureAdded  {
