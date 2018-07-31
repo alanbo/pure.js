@@ -12,7 +12,7 @@ beforeEach(() => {
     <div class="iterate"></div>
     <div class="iterate"></div>
     <div class="iterate"></div>
-    <div id="sample_id" class="iterate"></div>
+    <div id="sample_id" class="iterate last sample"></div>
   `;
 
 });
@@ -93,7 +93,7 @@ describe('Each method', () => {
       expect(elem).toBeInstanceOf(HTMLElement);
       iterations++;
     });
-    
+
     expect(iterations).toEqual(elems.length);
   });
 
@@ -118,5 +118,34 @@ describe('Each method', () => {
     });
 
     expect(iterations).toEqual(1);
+  });
+});
+
+describe('Css class methods', () => {
+  test('add class works', () => {
+    const div = p('div');
+
+    div.$.addClass('add-class-works');
+    expect(document.querySelector('div').classList.contains('add-class-works')).toBeTruthy();
+    expect(document.querySelector('.last').classList.contains('add-class-works')).toBeTruthy();
+  });
+
+  test('remove class works', () => {
+    const div = p('div');
+
+    div.$.removeClass('sample');
+    expect(document.querySelector('div').classList.contains('sample')).toBeFalsy();
+    expect(document.querySelector('.last').classList.contains('sample')).toBeFalsy();
+  });
+
+  test('toggle class works', () => {
+    const div = p('div');
+
+    div.$.toggleClass('toggle-class-works');
+    expect(document.querySelector('div').classList.contains('toggle-class-works')).toBeTruthy();
+    expect(document.querySelector('.last').classList.contains('toggle-class-works')).toBeTruthy();
+    div.$.toggleClass('toggle-class-works');
+    expect(document.querySelector('div').classList.contains('toggle-class-works')).toBeFalsy();
+    expect(document.querySelector('.last').classList.contains('toggle-class-works')).toBeFalsy();
   });
 });

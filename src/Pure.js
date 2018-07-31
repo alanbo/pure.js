@@ -17,7 +17,7 @@ class Pure {
     this.elem = elem;
   }
 
-  each(callback: (html_element: HTMLElement) => void) {
+  each(callback: (html_element: HTMLElement) => any) {
     if (this.elem instanceof HTMLCollection || this.elem instanceof NodeList) {
       for (let i = 0; i < this.elem.length; i++) {
         const pure_elem = this.elem[i];
@@ -33,7 +33,17 @@ class Pure {
     return this;
   }
 
+  addClass(name: string) {
+    this.each(elem => elem.classList.add(name));
+  }
 
+  removeClass(name: string) {
+    this.each(elem => elem.classList.remove(name));
+  }
+
+  toggleClass(name: string) {
+    this.each(elem => elem.classList.toggle(name));
+  }
 }
 
 export default Pure;
