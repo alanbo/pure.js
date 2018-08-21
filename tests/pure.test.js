@@ -8,7 +8,7 @@ beforeEach(() => {
     </div>
     <div>
     </div>
-    <div class="iterate"></div>
+    <div class="iterate" data-removable="to-be-removed"></div>
     <div class="iterate"></div>
     <div class="iterate"></div>
     <div class="iterate"></div>
@@ -148,4 +148,29 @@ describe('Css class methods', () => {
     expect(document.querySelector('div').classList.contains('toggle-class-works')).toBeFalsy();
     expect(document.querySelector('.last').classList.contains('toggle-class-works')).toBeFalsy();
   });
+});
+
+describe('Attribute handling', () => {
+  test('setting attribute works', () => {
+    const div = p('div');
+
+    div.$.setAttr('data-sample', 'sample-data');
+
+    div.$.each(elem => {
+      expect(elem.hasAttribute('data-sample')).toBeTruthy();
+      expect(elem.getAttribute('data-sample')).toEqual('sample-data');
+    });
+
+  });
+
+  test('removing attribute works', () => {
+    const div = p('div');
+    div.$.removeAttr('data-removable');
+
+    div.$.each(elem => {
+      expect(elem.hasAttribute('data-removable')).toBeFalsy();
+    });
+
+  });
+
 });
