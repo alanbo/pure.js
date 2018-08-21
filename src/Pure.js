@@ -44,6 +44,14 @@ class Pure {
   toggleClass(name: string) {
     this.each(elem => elem.classList.toggle(name));
   }
+
+  setAttr(name: string, value: string) {
+    this.each(elem => elem.setAttribute(name, value));
+  }
+
+  removeAttr(name: string) {
+    this.each(elem => elem.removeAttribute(name));
+  }
 }
 
 export default Pure;
