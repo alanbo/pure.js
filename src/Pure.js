@@ -1,56 +1,58 @@
 // @flow
-
-import type {
-  PureAdded,
-  ArrayLikePure,
-  HtmlElemListPure,
-  HtmlElemPure,
-  HtmlCollectionPure,
-  HtmlAll
-} from './types/html-types';
+export type HtmlAll = NodeList<HTMLElement> | HTMLElement | HTMLCollection<HTMLElement> | null;
 
 
 class Pure {
-  +elem: HtmlAll;
+  +_elem: HtmlAll;
 
   constructor(elem: HtmlAll) {
-    this.elem = elem;
+    this._elem = elem;
   }
 
-  each(callback: (html_element: HTMLElement) => any) {
-    if (this.elem instanceof HTMLCollection || this.elem instanceof NodeList) {
-      for (let i = 0; i < this.elem.length; i++) {
-        const pure_elem = this.elem[i];
-        pure_elem.$ = new Pure(this.elem[i]);
-        callback(this.elem[i]);
+  each(callback: (html_element: HTMLElement) => any): Pure {
+    if (this._elem instanceof HTMLCollection || this._elem instanceof NodeList) {
+      for (let i = 0; i < this._elem.length; i++) {
+        callback(this._elem[i]);
       }
-    } else if (this.elem instanceof HTMLElement) {
-      callback(this.elem);
-    } else {
-      console.log('You are calling .each() method on an empty element');
+    } else if (this._elem instanceof HTMLElement) {
+      callback(this._elem);
     }
 
     return this;
   }
 
-  addClass(name: string) {
+  addClass(name: string): Pure {
     this.each(elem => elem.classList.add(name));
+
+    return this;
   }
 
-  removeClass(name: string) {
+  removeClass(name: string): Pure {
     this.each(elem => elem.classList.remove(name));
+
+    return this;
   }
 
-  toggleClass(name: string) {
+  toggleClass(name: string): Pure {
     this.each(elem => elem.classList.toggle(name));
+
+    return this;
   }
 
-  setAttr(name: string, value: string) {
+  setAttr(name: string, value: string): Pure {
     this.each(elem => elem.setAttribute(name, value));
+
+    return this;
   }
 
-  removeAttr(name: string) {
+  removeAttr(name: string): Pure {
     this.each(elem => elem.removeAttribute(name));
+
+    return this;
+  }
+
+  domify(): HtmlAll {
+    return this._elem;
   }
 }
 
