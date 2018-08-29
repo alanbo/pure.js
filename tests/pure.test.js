@@ -14,7 +14,6 @@ beforeEach(() => {
     <div class="iterate"></div>
     <div id="sample_id" class="iterate last sample"></div>
   `;
-
 });
 
 
@@ -22,8 +21,8 @@ test('checks for existance of pure.js', () => {
   const body = p('body');
   console.log(body);
   expect(p).toBeDefined();
-  expect(body.$).toBeDefined();
-  expect(body.$).toBeInstanceOf(Pure);
+  expect(body).toBeDefined();
+  expect(body).toBeInstanceOf(Pure);
   expect(typeof p).toBe('function');
 });
 
@@ -31,9 +30,9 @@ test('checks for existance of pure.js', () => {
 test('checks if quering works', () => {
   const body = p('body');
 
-  expect(body).toBeInstanceOf(NodeList);
-  expect(body[0].tagName).toBe('BODY');
-  expect(p('div:last-child')[0].id).toBe('sample_id');
+  expect(body.domify()).toBeInstanceOf(NodeList);
+  expect(body.domify()[0].tagName).toBe('BODY');
+  expect(p('div:last-child').domify()[0].id).toBe('sample_id');
 });
 
 
@@ -41,34 +40,34 @@ test('checks if quering one element works', () => {
   const body = p.one('body');
   const last_div = p.one('div:last-child');
 
-  expect(body).toBeInstanceOf(HTMLBodyElement);
-  expect(body.tagName).toBe('BODY');
-  expect(last_div.id).toBe('sample_id');
+  expect(body.domify()).toBeInstanceOf(HTMLBodyElement);
+  expect(body.domify().tagName).toBe('BODY');
+  expect(last_div.domify().id).toBe('sample_id');
 });
 
 
 test('checks if selection by class name works', () => {
   const div = p.c('sample');
-  expect(div).toBeInstanceOf(HTMLCollection);
+  expect(div.domify()).toBeInstanceOf(HTMLCollection);
 });
 
 
 test('checks if selection by class name works', () => {
   const div = p.c('sample');
-  expect(div).toBeInstanceOf(HTMLCollection);
+  expect(div.domify()).toBeInstanceOf(HTMLCollection);
 });
 
 
 test('checks if selection by tag name works', () => {
   const paragraphs = p.t('p');
-  expect(paragraphs).toBeInstanceOf(HTMLCollection);
-  expect(paragraphs[0]).toBeInstanceOf(HTMLParagraphElement);
+  expect(paragraphs.domify()).toBeInstanceOf(HTMLCollection);
+  expect(paragraphs.domify()[0]).toBeInstanceOf(HTMLParagraphElement);
 });
 
 
 test('checks if selection by id works', () => {
   const div = p.i('sample_id');
-  expect(div).toBeInstanceOf(Element);
+  expect(div.domify()).toBeInstanceOf(Element);
 });
 
 test('checks if null results return Pure interface', () => {
@@ -78,41 +77,41 @@ test('checks if null results return Pure interface', () => {
   const null_t = p.t('blockquote');
   const null_i = p.i('non-existant-id');
 
-  expect(null_p.$).toBeInstanceOf(Pure);
-  expect(null_one.$).toBeInstanceOf(Pure);
-  expect(null_c.$).toBeInstanceOf(Pure);
-  expect(null_t.$).toBeInstanceOf(Pure);
-  expect(null_i.$).toBeInstanceOf(Pure);
+  expect(null_p).toBeInstanceOf(Pure);
+  expect(null_one).toBeInstanceOf(Pure);
+  expect(null_c).toBeInstanceOf(Pure);
+  expect(null_t).toBeInstanceOf(Pure);
+  expect(null_i).toBeInstanceOf(Pure);
 });
 
 describe('Each method', () => {
   test('Iterates over html collection', () => {
     let iterations = 0;
     const elems = p.c('iterate');
-    elems.$.each(elem => {
+    elems.each(elem => {
       expect(elem).toBeInstanceOf(HTMLElement);
       iterations++;
     });
 
-    expect(iterations).toEqual(elems.length);
+    expect(iterations).toEqual(elems.domify().length);
   });
 
   test('Iterates over NodeList', () => {
     let iterations = 0;
     const elems = p.t('div');
 
-    elems.$.each(elem => {
+    elems.each(elem => {
       expect(elem).toBeInstanceOf(HTMLElement);
       iterations++;
     });
 
-    expect(iterations).toEqual(elems.length);
+    expect(iterations).toEqual(elems.domify().length);
   });
 
   test('Runs callback over one HTMLElement', () => {
     let iterations = 0;
 
-    p.one('div').$.each(elem => {
+    p.one('div').each(elem => {
       expect(elem).toBeInstanceOf(HTMLElement);
       iterations++;
     });
@@ -125,7 +124,7 @@ describe('Css class methods', () => {
   test('add class works', () => {
     const div = p('div');
 
-    div.$.addClass('add-class-works');
+    div.addClass('add-class-works');
     expect(document.querySelector('div').classList.contains('add-class-works')).toBeTruthy();
     expect(document.querySelector('.last').classList.contains('add-class-works')).toBeTruthy();
   });
@@ -133,7 +132,7 @@ describe('Css class methods', () => {
   test('remove class works', () => {
     const div = p('div');
 
-    div.$.removeClass('sample');
+    div.removeClass('sample');
     expect(document.querySelector('div').classList.contains('sample')).toBeFalsy();
     expect(document.querySelector('.last').classList.contains('sample')).toBeFalsy();
   });
@@ -141,10 +140,10 @@ describe('Css class methods', () => {
   test('toggle class works', () => {
     const div = p('div');
 
-    div.$.toggleClass('toggle-class-works');
+    div.toggleClass('toggle-class-works');
     expect(document.querySelector('div').classList.contains('toggle-class-works')).toBeTruthy();
     expect(document.querySelector('.last').classList.contains('toggle-class-works')).toBeTruthy();
-    div.$.toggleClass('toggle-class-works');
+    div.toggleClass('toggle-class-works');
     expect(document.querySelector('div').classList.contains('toggle-class-works')).toBeFalsy();
     expect(document.querySelector('.last').classList.contains('toggle-class-works')).toBeFalsy();
   });
@@ -154,9 +153,9 @@ describe('Attribute handling', () => {
   test('setting attribute works', () => {
     const div = p('div');
 
-    div.$.setAttr('data-sample', 'sample-data');
+    div.setAttr('data-sample', 'sample-data');
 
-    div.$.each(elem => {
+    div.each(elem => {
       expect(elem.hasAttribute('data-sample')).toBeTruthy();
       expect(elem.getAttribute('data-sample')).toEqual('sample-data');
     });
@@ -165,9 +164,9 @@ describe('Attribute handling', () => {
 
   test('removing attribute works', () => {
     const div = p('div');
-    div.$.removeAttr('data-removable');
+    div.removeAttr('data-removable');
 
-    div.$.each(elem => {
+    div.each(elem => {
       expect(elem.hasAttribute('data-removable')).toBeFalsy();
     });
 
