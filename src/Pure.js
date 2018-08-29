@@ -11,9 +11,7 @@ class Pure {
 
   each(callback: (html_element: HTMLElement) => any): Pure {
     if (this._elem instanceof HTMLCollection || this._elem instanceof NodeList) {
-      for (let i = 0; i < this._elem.length; i++) {
-        callback(this._elem[i]);
-      }
+      [...this._elem].forEach(elem => callback(elem));
     } else if (this._elem instanceof HTMLElement) {
       callback(this._elem);
     }
