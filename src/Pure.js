@@ -9,6 +9,34 @@ class Pure {
     this._elem = elem;
   }
 
+  on(event_name: string, callback: (Event) => any): Pure {
+    this.each(elem => {
+      elem.addEventListener(event_name, callback);
+    });
+
+    return this;
+  }
+
+  trigger(event_name: string, data?: Object): Pure {
+    // $FlowFixMe
+    const is_native: boolean = typeof document.body[`on${event_name}`] !== 'undefined';
+    let event: Event;
+
+    if (is_native) {
+      event = document.createEvent('HTMLEvents');
+      event.initEvent(event_name, true, false);
+    } else {
+      event = document.createEvent('CustomEvent');
+      event.initCustomEvent(event_name, true, true, data);
+    }
+
+    this.each(element => {
+      element.dispatchEvent(event);
+    });
+
+    return this;
+  }
+
   each(callback: (html_element: HTMLElement) => any): Pure {
     if (this._elem instanceof HTMLCollection || this._elem instanceof NodeList) {
       [...this._elem].forEach(elem => callback(elem));
